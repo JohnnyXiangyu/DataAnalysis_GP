@@ -9,6 +9,7 @@ import serial
 import serial.tools.list_ports
 import csv
 import os
+import time
 
 print('Loading serial communication module ...')
 
@@ -88,6 +89,8 @@ class SerialPort:
             # port open
             else:
                 self.m_port = serial.Serial(self.m_name, self.m_br)
+                time.sleep(0.1)
+                self.m_port.flushInput()
 
     def __del__(self):
         # port close
