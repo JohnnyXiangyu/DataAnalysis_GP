@@ -88,7 +88,7 @@ class SerialPort:
                 print('| The designated device is not connected. ')
             # port open
             else:
-                self.m_port = serial.Serial(self.m_name, self.m_br)
+                self.m_port = serial.Serial(self.m_name, self.m_br, timeout=0)
                 # delay for 100 ms then flush input
                 time.sleep(0.1)
                 self.m_port.flushInput()
