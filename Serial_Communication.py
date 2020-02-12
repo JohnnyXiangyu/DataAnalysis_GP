@@ -89,6 +89,7 @@ class SerialPort:
             # port open
             else:
                 self.m_port = serial.Serial(self.m_name, self.m_br)
+                # delay for 100 ms then flush input
                 time.sleep(0.1)
                 self.m_port.flushInput()
 
