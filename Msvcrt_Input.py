@@ -1,6 +1,9 @@
-import msvcrt
-print('Loading input module ...')
-
+from utils import OsMismatch
+try:
+    print('Loading input module ...')
+    import msvcrt
+except ModuleNotFoundError:
+    raise(OsMismatch)
 
 class usrInput:
     '''

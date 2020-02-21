@@ -3,7 +3,7 @@
 class OsError(Exception):
     pass
 
-class OsMismatch(Exception):
+class OsMismatch(OsError):
     '''
     exception prepared to throw when OS-specific modules are loaded on wrong system
     e.g. loading Msvcrt_Input in linux
