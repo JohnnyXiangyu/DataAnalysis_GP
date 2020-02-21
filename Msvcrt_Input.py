@@ -1,3 +1,8 @@
+'''
+user input (press key to blah blah) module used under Windows,
+module msvcrt is Windows-specific
+'''
+
 from utils import OsMismatch
 try:
     print('Loading input module ...')
