@@ -28,3 +28,16 @@ class usrInput:
                 return 1
             else:
                 return 0
+
+def inputInit():
+    pass
+
+def getInput():
+    if msvcrt.kbhit():
+        char = msvcrt.getwch()
+        return char
+    else:
+        return 0
+
+def inputFinalize():
+    pass
