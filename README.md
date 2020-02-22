@@ -5,9 +5,6 @@ Useful when data end is transmitting data through serial communication
 
 ## Package Dependency
 
-The Stdin_Input module dependends on Boost, a library wrapping C/C++ classes
-into Python objects.
-
 ## TODO
 
 ### Get the test module back online
