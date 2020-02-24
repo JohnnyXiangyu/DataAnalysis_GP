@@ -1,7 +1,7 @@
 import utils
 
 try: 
-    import Msvcrt_Input
+    import Msvcrt_Input as in_funcs
 except utils.OsMismatch:
     try:
         import Stdin_Input as in_funcs
@@ -15,8 +15,14 @@ class usrInput:
         getInput(): return 1 for red button (EVENT button)
                     return 2 for black button (EXIT button)
     '''
+    def __init__(self):
+        in_funcs.inputInit()
+
 
     def getInput(self):
         '''action per frame, return 1 for red button and 2 for black button'''
-        if in_funcs
+        return in_funcs.getInput()
+
+    def __del__(self):
+        in_funcs.inputFinalize()
 
