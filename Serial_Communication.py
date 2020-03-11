@@ -64,54 +64,36 @@ class VirtualPort:
 
 class SerialPort:
     '''
-    Data source prototype class, defines the following working procedure:
-        __init__: open port
-        communicate: sendData, readData
+    Abstraction of serial port, simplified to only search name and free.
     '''
 
     def __init__(self, name, br):
         port_list = list(serial.tools.list_ports.comports())
         self.m_name = ''
         self.m_br = br
-        self.m_port = False
+        self.m_port = None
+        self.m_error = ""
         # get input
         if len(port_list) <= 0:
-            os.system('cls')
             print('| There is no serial device connected.')
+            self.m_error = "no-ser-device"
         else:
             for i in port_list:
                 if name in i.description:
                     self.m_name = i.device  # find the first designated device
             if self.m_name == '':
-                os.system('cls')
                 print('| The designated device is not connected. ')
+                self.m_error = "target-not-found"
             # port open
             else:
                 self.m_port = serial.Serial(self.m_name, self.m_br)
 
-    def __del__(self):
-        # port close
-        if self.m_port != False and self.m_port.isOpen() == True:
+    def stop(self):
+        """
+        Free resource: serial port
+        """
+        if self.m_port and self.m_port.isOpen() == True:
             self.m_port.close()
-
-    def sendData(self, purpose):
-        pass
-
-    def readData(self):
-        return ''
-
-    def communicate(self, purpose='latest_sensing'):
-        """return a designated response from serial port"""
-        # communicate & error reporting
-        if self.sendData(purpose) == False:
-            return -1
-        result = self.readData()
-        if result == False:
-            return -1
-
-        # pack data
-        list1 = []
-        for char in result:
-            list1.append(int(char))
-
-        return list1
+    
+    def __del__(self):
+        self.stop()
