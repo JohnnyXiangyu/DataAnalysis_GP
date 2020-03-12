@@ -1,9 +1,9 @@
-"""serial communication library (win64), inclusing base class Port \n
-    API: \n
-        __init__(name, baudrate) \n
-        sendData(arg) customizable interface \n
-        readData(arg) customizable interface \n
-        communicate(arg) \n"""
+"""serial communication library (win64), inclusing base class Port  
+    API:  
+        __init__(name, baudrate)  
+        sendData(arg) customizable interface  
+        readData(arg) customizable interface  
+        communicate(arg)"""
 
 import serial
 import serial.tools.list_ports
@@ -12,6 +12,13 @@ import os
 
 print('Loading serial communication module ...')
 
+
+class Error(Exception):
+    pass
+
+class PortError(Error):
+    def __init__(self, message):
+        self.message = message
 
 class VirtualPort:
     '''
@@ -64,7 +71,10 @@ class VirtualPort:
 
 class SerialPort:
     '''
-    Abstraction of serial port, simplified to only search name and free.
+    Wrapper for a serial port instance provided by pyserial.  
+    Wrapped API:
+        read()
+        readLine()
     '''
 
     def __init__(self, name, br):
@@ -75,25 +85,60 @@ class SerialPort:
         self.m_error = ""
         # get input
         if len(port_list) <= 0:
-            print('| There is no serial device connected.')
-            self.m_error = "no-ser-device"
+            raise(PortError('no serial device found'))
         else:
             for i in port_list:
                 if name in i.description:
                     self.m_name = i.device  # find the first designated device
             if self.m_name == '':
-                print('| The designated device is not connected. ')
-                self.m_error = "target-not-found"
+                raise(PortError('target serial device not found'))
             # port open
             else:
                 self.m_port = serial.Serial(self.m_name, self.m_br)
 
     def stop(self):
         """
-        Free resource: serial port
+        Free resource: serial port  
         """
         if self.m_port and self.m_port.isOpen() == True:
             self.m_port.close()
-    
+
+    def read(self, bytes=1):
+        """
+        Wraps a read() call.  
+        Returns None on error, otherwise list of integer (byte) read.  
+        """
+        if self.m_port == None:
+            raise(PortError('port not open while atempting to read'))
+        else:
+            new_data = self.m_port.read(bytes)
+            result = []
+            for byte in new_data:
+                result.append(int(byte))
+            return result
+
+    def readline(self):
+        """
+        Wraps a readline() call.  
+        Returns None on error, otherwise list of integers (bytes) read in a line.
+        """
+        if self.m_port == None:
+            raise(PortError('port not open while atempting to read'))
+        else:
+            new_data = self.m_port.read(bytes)
+            result = []
+            for byte in new_data:
+                result.append(int(byte))
+            return result
+
+    def flushInput(self):
+        """
+        Wraps flushInput() call
+        """
+        if self.m_port == None:
+            raise(PortError('port not open while atempting to flush'))
+        else:
+            self.m_port.flushInput()
+
     def __del__(self):
         self.stop()
