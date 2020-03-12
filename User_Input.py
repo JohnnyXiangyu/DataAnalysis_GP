@@ -1,10 +1,10 @@
-import utils
+import DataAnalysis_GP.utils as utils
 
 try: 
-    import Msvcrt_Input as in_funcs
+    import DataAnalysis_GP.Msvcrt_Input as in_funcs
 except utils.OsMismatch:
     try:
-        import Stdin_Input as in_funcs
+        import DataAnalysis_GP.Stdin_Input as in_funcs
     except utils.OsMismatch:
         raise(utils.OsNotSupported)
 
