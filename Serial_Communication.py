@@ -125,7 +125,7 @@ class SerialPort:
         if self.m_port == None:
             raise(PortError('port not open while atempting to read'))
         else:
-            new_data = self.m_port.read(bytes)
+            new_data = self.m_port.readline()
             result = []
             for byte in new_data:
                 result.append(int(byte))
